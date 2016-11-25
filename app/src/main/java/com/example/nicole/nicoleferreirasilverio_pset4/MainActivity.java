@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
 
         EditText todo_input = (EditText) findViewById(R.id.editText);
         String task = todo_input.getText().toString();
-        TextView instructions = (TextView) findViewById(R.id.textView);
 
         if (task.length() != 0) {
             dbHelper.create(task);
@@ -85,14 +87,14 @@ public class MainActivity extends AppCompatActivity {
         // Attach cursor adapter to the ListView
         lvItems.setAdapter(todoAdapter);
 
+        ListView tasklist = (ListView) findViewById(R.id.todo_list);
+
         dbHelper.close();
 
-        lvItems.setOnClickListener(new AdapterView.OnItemClickListener() {
+        tasklist.setOnClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Object item = lvItems.getItemAtPosition(position);
-
-                Toast.makeText(this, "You selected : ",Toast.LENGTH_SHORT).show();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                Object item = parent.getItemAtPosition(position);
             }
         });
     }
