@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">nicoleferreirasilverio-pset4</string>
+
+    <string name="welcome_message">My TO-DO list</string>
+
+    <string name="add_button">Add!</string>
+
+    <string name="todo">What needs to be done?</string>
+</resources>
