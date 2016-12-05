@@ -9,6 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static android.R.attr.value;
+import static com.example.nicole.nicoleferreirasilverio_pset4.R.string.todo;
+
 /**
  * Created by Nicole on 22-11-2016.
  */
@@ -40,7 +43,7 @@ public class DBhelper extends SQLiteOpenHelper {
     }
 
     // create
-    public void create( String todo_element ){
+    public void create(String todo_element){
         SQLiteDatabase db  = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(todo_id, todo_element);
@@ -80,11 +83,11 @@ public class DBhelper extends SQLiteOpenHelper {
 //    }
 
     //update
-    public void update( String todo_element) {
+    public void update(String todo_new) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(todo_id, todo_element);
-        db.update(TABLE, values, " _id = ? ", new String[] {String.valueOf(todo_id)});
+        values.put(todo_id, todo_new);
+        db.update(TABLE, values, " _id = ? ", new String[] {String.valueOf(todo_new)});
         db.close();
     }
 

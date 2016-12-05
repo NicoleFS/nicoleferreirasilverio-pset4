@@ -66,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
         EditText todo_input = (EditText) findViewById(R.id.editText);
         String task = todo_input.getText().toString();
 
+//        TodoElement ToDo = new TodoElement();
+//        ToDo.setTask(task);
+
         if (task.length() != 0) {
             dbHelper.create(task);
             dbHelper.close();
@@ -78,26 +81,53 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void showList(){
-        DBhelper dbHelper = new DBhelper(this);
-        Cursor cursor = dbHelper.read();
+    public void showList() {
+        final DBhelper dbHelper = new DBhelper(this);
+        final Cursor cursor = dbHelper.read();
 
         // Setup cursor adapter using cursor from last step
         TodoCursorAdapter todoAdapter = new TodoCursorAdapter(this, cursor);
         // Attach cursor adapter to the ListView
         lvItems.setAdapter(todoAdapter);
 
-        ListView tasklist = (ListView) findViewById(R.id.todo_list);
 
         dbHelper.close();
 
-        tasklist.setOnClickListener(new AdapterView.OnItemClickListener() {
+        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                Object item = parent.getItemAtPosition(position);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Cursor taskcursor = (Cursor) lvItems.getItemAtPosition(position);
+                String task_element = taskcursor.getString(taskcursor.getColumnIndexOrThrow("task"));
+                String done_task = "DONE: " + task_element;
+//                TextView currentLV = (TextView) lvItems.getItemAtPosition(position);
+//                currentLV.setText(done_task);
+//                Object item = lvItems.getItemAtPosition(position);
+                TextView listitem = (TextView) view.findViewById(R.id.todo_element);
+                listitem.setText(done_task);
+//                Object item = lvItems.getItemAtPosition(position);
+//                String task = item.toString();
+//
+//                String doneTask = "DONE: " + task;
+//                dbHelper.update(done_task);
+//                dbHelper.close();
+//                showList();
+//
+//                TextView listitem = (TextView) findViewById(R.id.todo_element);
+//                String task = listitem.getText().toString();
+//                listitem.setText(doneTask);
             }
         });
     }
+//        lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id){
+//                Cursor deleteCursor = (Cursor) lvItems.getItemAtPosition(position);
+//                int cursorID = deleteCursor.getInt(deleteCursor.getColumnIndexOrThrow("task"));
+//                dbHelper.delete();
+//                showList();
+//                return true;
+//            }
+//        });
+//    }
 }
 
 
