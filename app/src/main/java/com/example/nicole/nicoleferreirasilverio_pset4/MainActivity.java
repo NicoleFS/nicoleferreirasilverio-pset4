@@ -66,11 +66,11 @@ public class MainActivity extends AppCompatActivity {
         EditText todo_input = (EditText) findViewById(R.id.editText);
         String task = todo_input.getText().toString();
 
-//        TodoElement ToDo = new TodoElement();
-//        ToDo.setTask(task);
+        TodoElement ToDo = new TodoElement();
+        ToDo.setTask(task);
 
         if (task.length() != 0) {
-            dbHelper.create(task);
+            dbHelper.create(ToDo);
             dbHelper.close();
             todo_input.setText("");
         }
@@ -98,36 +98,24 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Cursor taskcursor = (Cursor) lvItems.getItemAtPosition(position);
                 String task_element = taskcursor.getString(taskcursor.getColumnIndexOrThrow("task"));
+                int taskID = taskcursor.getInt(taskcursor.getColumnIndexOrThrow("_id"));
                 String done_task = "DONE: " + task_element;
-//                TextView currentLV = (TextView) lvItems.getItemAtPosition(position);
-//                currentLV.setText(done_task);
-//                Object item = lvItems.getItemAtPosition(position);
-                TextView listitem = (TextView) view.findViewById(R.id.todo_element);
-                listitem.setText(done_task);
-//                Object item = lvItems.getItemAtPosition(position);
-//                String task = item.toString();
-//
-//                String doneTask = "DONE: " + task;
-//                dbHelper.update(done_task);
-//                dbHelper.close();
-//                showList();
-//
-//                TextView listitem = (TextView) findViewById(R.id.todo_element);
-//                String task = listitem.getText().toString();
-//                listitem.setText(doneTask);
+                dbHelper.update(done_task, taskID);
+                dbHelper.close();
+                showList();
+            }
+        });
+
+        lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id){
+                Cursor deleteCursor = (Cursor) lvItems.getItemAtPosition(position);
+                int deletecursorID = deleteCursor.getInt(deleteCursor.getColumnIndexOrThrow("_id"));
+                dbHelper.delete(deletecursorID);
+                showList();
+                return true;
             }
         });
     }
-//        lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id){
-//                Cursor deleteCursor = (Cursor) lvItems.getItemAtPosition(position);
-//                int cursorID = deleteCursor.getInt(deleteCursor.getColumnIndexOrThrow("task"));
-//                dbHelper.delete();
-//                showList();
-//                return true;
-//            }
-//        });
-//    }
 }
 
 

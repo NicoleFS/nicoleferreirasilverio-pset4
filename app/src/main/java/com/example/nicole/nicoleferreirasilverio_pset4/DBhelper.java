@@ -43,10 +43,11 @@ public class DBhelper extends SQLiteOpenHelper {
     }
 
     // create
-    public void create(String todo_element){
+    public void create(TodoElement todo_element){
         SQLiteDatabase db  = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(todo_id, todo_element);
+        todo_element.setId("_id");
+        values.put(todo_id, todo_element.task);
         db.insert(TABLE, null, values);
         db.close();
     }
@@ -63,17 +64,17 @@ public class DBhelper extends SQLiteOpenHelper {
         return cursor;
 
     }
-//    public ArrayList<HashMap<String, String>> read () {
+//    public ArrayList<TodoElement> read () {
 //        SQLiteDatabase db = getReadableDatabase();
 //        String query = "SELECT _id , " + todo_id + " FROM " + TABLE;
-//        ArrayList<HashMap<String, String>> todolist = new ArrayList<>();
+//        ArrayList<TodoElement> todolist = new ArrayList<>();
 //        Cursor cursor = db.rawQuery(query, null);
 //        if (cursor.moveToFirst()) {
 //            do {
-//                HashMap<String, String> tododata = new HashMap<>();
-//                tododata.put("id", cursor.getString(cursor.getColumnIndex("_id")));
-//                tododata.put("task", cursor.getString(cursor.getColumnIndex(todo_id)));
-//                todolist.add(tododata);
+//                TodoElement todo_element = new TodoElement();
+//                todo_element.setId(cursor.getString(cursor.getColumnIndex("_id")));
+//                todo_element.setTask(cursor.getString(cursor.getColumnIndex("task")));
+//                todolist.add(todo_element);
 //            }
 //            while (cursor.moveToNext());
 //        }
@@ -83,11 +84,11 @@ public class DBhelper extends SQLiteOpenHelper {
 //    }
 
     //update
-    public void update(String todo_new) {
+    public void update(String todo_new, int ID) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(todo_id, todo_new);
-        db.update(TABLE, values, " _id = ? ", new String[] {String.valueOf(todo_new)});
+        db.update(TABLE, values, " _id = ? ", new String[] {String.valueOf(ID)});
         db.close();
     }
 
